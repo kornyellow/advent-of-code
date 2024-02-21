@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="th">
+<head>
+	<!-- metadata -->
+	<meta charset="UTF-8">
+	<meta name="viewport"
+	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<!-- Stylesheet -->
+	<link rel="stylesheet" href="../style.css">
+
+	<!-- Title -->
+	<title>ข้อ 02</title>
+</head>
+<body>
+
+<section>
+	<h1>ข้อ 02</h1>
+	<p><a href="index.html">ย้อนกลับ</a></p>
+	<p><a href="https://adventofcode.com/2015/day/2">รายละเอียดโจทย์</a></p>
+</section>
+
+<section>
+	<article>
+		<div>
+			<label for="input"><h2>ข้อมูลขาเข้า</h2></label>
+			<textarea id="input"></textarea>
+			<button id="submit">คำนวณ</button>
+		</div>
+
+		<div>
+			<h2>ข้อมูลขาออก</h2>
+			<div class="output">
+				<label for="output_part_1">Part 1</label><input id="output_part_1" readonly>
+				<label for="output_part_2">Part 2</label><input id="output_part_2" readonly>
+			</div>
+		</div>
+	</article>
+</section>
+
+</body>
+
+<script>
+	// User Functions
+	function sumOfWrappedPaper(input) {
+		let boxes = input.split("\n");
+
+		let sum = 0;
+		boxes.forEach((box) => {
+			let units = box.split("x");
+			let width = units[0];
+			let length = units[1];
+			let height = units[2];
+			let sideA = width * length;
+			let sideB = width * height;
+			let sideC = height * length;
+			sum += (2 * sideA + 2 * sideB + 2 * sideC) + Math.min(sideA, sideB, sideC);
+		});
+		return sum;
+	}
+
+	function sumOfRibbons(input) {
+		let boxes = input.split("\n");
+
+		let sum = 0;
+		boxes.forEach((box) => {
+			let units = box.split("x");
+			let unitsSorted = units.sort(function (a, b) {
+				return a - b;
+			})
+
+			let width = unitsSorted[0];
+			let length = unitsSorted[1];
+			let height = unitsSorted[2];
+
+			sum += width * length * height;
+			sum += width * 2 + length * 2;
+		});
+		return sum;
+	}
+
+	// System Functions
+	function solutionPart1(input) {
+		return sumOfWrappedPaper(input);
+	}
+	function solutionPart2(input) {
+		return sumOfRibbons(input);
+	}
+
+	let input = document.getElementById("input");
+	let outputPart1 = document.getElementById("output_part_1");
+	let outputPart2 = document.getElementById("output_part_2");
+	let submitButton = document.getElementById("submit");
+
+	submitButton.addEventListener("click", function () {
+		outputPart1.value = solutionPart1(input.value);
+		outputPart2.value = solutionPart2(input.value);
+	});
+</script>
+</html>
