@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="th">
+<head>
+	<!-- metadata -->
+	<meta charset="UTF-8">
+	<meta name="viewport"
+	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<!-- Stylesheet -->
+	<link rel="stylesheet" href="../style.css">
+
+	<!-- Title -->
+	<title>ข้อ 03</title>
+</head>
+<body>
+
+<section>
+	<h1>ข้อ 03</h1>
+	<p><a href="index.html">ย้อนกลับ</a></p>
+	<p><a href="https://adventofcode.com/2015/day/3">รายละเอียดโจทย์</a></p>
+</section>
+
+<section>
+	<article>
+		<div>
+			<label for="input"><h2>ข้อมูลขาเข้า</h2></label>
+			<textarea id="input"></textarea>
+			<button id="submit">คำนวณ</button>
+		</div>
+
+		<div>
+			<h2>ข้อมูลขาออก</h2>
+			<div class="output">
+				<label for="output_part_1">Part 1</label><input id="output_part_1" readonly>
+				<label for="output_part_2">Part 2</label><input id="output_part_2" readonly>
+			</div>
+		</div>
+	</article>
+</section>
+
+</body>
+
+<script>
+	// User Functions
+	function countHouses(input) {
+		let memory = new Map();
+		memory.set("0,0", 1);
+		let x = 0;
+		let y = 0;
+
+		for (let i = 0; i < input.length; i++) {
+			switch (input[i]) {
+				case "^":
+					y -= 1;
+					break;
+				case "v":
+					y += 1;
+					break;
+				case "<":
+					x -= 1;
+					break;
+				case ">":
+					x += 1;
+					break;
+			}
+			let key = x + "," + y;
+			if (!memory.has(key))
+				memory.set(key, 1);
+		}
+		return memory.size;
+	}
+	function countHousesWithRobots(input) {
+		let memory = new Map();
+		memory.set("0,0", 1);
+		let positions = [{x: 0, y: 0}, {x: 0, y: 0}];
+		let turn = 0;
+
+		for (let i = 0; i < input.length; i++) {
+			switch (input[i]) {
+				case "^":
+					positions[turn].y -= 1;
+					break;
+				case "v":
+					positions[turn].y += 1;
+					break;
+				case "<":
+					positions[turn].x -= 1;
+					break;
+				case ">":
+					positions[turn].x += 1;
+					break;
+			}
+			let key = positions[turn].x + "," + positions[turn].y;
+			if (!memory.has(key))
+				memory.set(key, 1);
+
+			if (turn === 1)
+				turn = 0;
+			else
+				turn = 1;
+		}
+		return memory.size;
+	}
+
+	// System Functions
+	function solutionPart1(input) {
+		return countHouses(input);
+	}
+
+	function solutionPart2(input) {
+		return countHousesWithRobots(input);
+	}
+
+	let input = document.getElementById("input");
+	let outputPart1 = document.getElementById("output_part_1");
+	let outputPart2 = document.getElementById("output_part_2");
+	let submitButton = document.getElementById("submit");
+
+	submitButton.addEventListener("click", function () {
+		outputPart1.value = solutionPart1(input.value);
+		outputPart2.value = solutionPart2(input.value);
+	});
+</script>
+</html>
